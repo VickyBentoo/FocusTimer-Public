@@ -1,17 +1,34 @@
 import state from './state.js'
+import * as timer from './timer.js'
+import * as element from './elements.js'
+import * as sounds from './sounds.js'
 
 export function toggleRunning() {
-    document.documentElement.classList.toggle('running')
+    state.isRunning = document.documentElement.classList.toggle('running')
     /*state.isRunning = !state.isRunning*/
+    timer.countdown()
+    sounds.buttonPressAudio.play()
 }
 
 export function reset() {
     state.isRunning = false
     document.documentElement.classList.remove('running')
+    timer.updateDisplay()
+    sounds.buttonPressAudio.play()
 }
 
-export function set() {}
+export function set() {
+    element.minutes.setAttribute('contenteditable', true)
+    element.minutes.focus()
+}
 
 export function toggleMusic() {
-    state.isMusic = document.documentElement.classList.toggle('music-on')
+    state.isMute = document.documentElement.classList.toggle('music-on')
+
+    if(state.isMute) {
+        sounds.bgAudio.play()
+        return
+    }
+
+    sounds.bgAudio.pause()
 }
